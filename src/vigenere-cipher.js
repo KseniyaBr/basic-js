@@ -3,53 +3,51 @@ const CustomError = require("../extensions/custom-error");
 class VigenereCipheringMachine {
 
   constructor(modification) {
-    this.modification = modification ;
-  }
+  this.modification = modification;
+}
 
-  encrypt(message, key) {
-    if (message == null || key == null) throw Error();
-    const LATIN_LETTERS = /[A-Za-z]/;
-    const ALPHABET_LENGTH = 26;
-    const FIRST_LETTER_CODE = 'A'.charCodeAt();
-    let codingLetterCounter = 0;
-
-    message = message.toUpperCase().split('');
-    key = key.toUpperCase();
-
-    message.forEach((element, index) => {
-      if (LATIN_LETTERS.test(element)) {
-        message[index] = String.fromCharCode(
-          ((element.charCodeAt() - FIRST_LETTER_CODE
-            + (key[codingLetterCounter % key.length].charCodeAt() - FIRST_LETTER_CODE))
-            % ALPHABET_LENGTH)
-          + FIRST_LETTER_CODE);
-        codingLetterCounter++;
+encrypt(str, sKey) {
+  if(str === undefined || sKey === undefined) {
+    throw new Error;
+  } else {
+    let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    str = str.toUpperCase();
+    sKey = sKey.toUpperCase();
+    let result = [];
+    let j = 0;
+    for (let i = 0; i < str.length; i++) {
+      if (alphabet.includes(str[i])) {
+        result.push(alphabet[( alphabet.indexOf(str[i]) + alphabet.indexOf(sKey[j % sKey.length]) ) % alphabet.length]);
+        j += 1;
+      } else {
+        result.push(str[i]);
       }
-    });
-    return this.modification === false ? message.reverse().join('') : message.join('');
+    }
+    return this.modification !== false ? result.join('') : result.reverse().join('');
   }
-  decrypt(message, key) {
-    if (message == null || key == null) throw Error();
-    const LATIN_LETTERS = /[A-Za-z]/;
-    const ALPHABET_LENGTH = 26;
-    const FIRST_LETTER_CODE = 'A'.charCodeAt();
-    let codingLetterCounter = 0;
+}
 
-    message = message.toUpperCase().split('');
-    key = key.toUpperCase();
-
-    message.forEach((element, index) => {
-      if (LATIN_LETTERS.test(element)) {
-        message[index] = String.fromCharCode(
-          ((element.charCodeAt() - FIRST_LETTER_CODE
-            + (ALPHABET_LENGTH - (key[codingLetterCounter % key.length].charCodeAt() - FIRST_LETTER_CODE)))
-            % ALPHABET_LENGTH)
-          + FIRST_LETTER_CODE);
-        codingLetterCounter++;
+decrypt(str, sKey) {
+  if(str === undefined || sKey === undefined) {
+    throw new Error;
+  } else {
+    let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    str = str.toUpperCase();
+    sKey = sKey.toUpperCase();
+    let result = [];
+    let j = 0;
+    for (let i = 0; i < str.length; i++) {
+      if (alphabet.includes(str[i])) {
+        result.push(alphabet[(26 + alphabet.indexOf(str[i]) - alphabet.indexOf(sKey[j % sKey.length]) ) % alphabet.length]);
+        j += 1;
+      } else {
+        result.push(str[i]);
       }
-    });
-    return this.modification === false ? message.reverse().join('') : message.join('');
+    }
+    return this.modification !== false ? result.join('') : result.reverse().join('');
   }
+}
+
 }
 
 module.exports = VigenereCipheringMachine;
