@@ -11,13 +11,25 @@ module.exports = function getSeason(/* date */) {
       throw new Error(e);
     }
 
-    let m = dateCheck.getMonth() + 1;
-    let season = ""
-    if ( (m >= 1 && m <= 2) || m == 12 ) season = 'winter';
-    if ( m >= 3 && m <= 5 ) season = 'spring';
-    if ( m >= 6 && m <= 8 ) season = 'summer';
-    if ( m >= 9 && m <= 11 ) season = 'autumn';
-
-    return season;
+  let month = date.getMonth()
+  switch (month) {
+    case 0:
+    case 1:
+    case 11:
+      return 'winter';
+      break;
+    case 2:
+    case 3:
+    case 4:
+      return 'spring';
+      break;
+    case 5:
+    case 6:
+    case 7:
+      return 'summer';
+      break;
+    default:
+      return 'fall';
+  }
 };
 
