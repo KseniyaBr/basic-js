@@ -1,6 +1,6 @@
 const CustomError = require("../extensions/custom-error");
 
-module.exports = function getSeason(/* date */) {    
+module.exports = function getSeason(date) {    
 	let dateCheck = new Date(date);
     if (!dateCheck) { 
     	return 'Unable to determine the time of year!';
